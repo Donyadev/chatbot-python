@@ -1,37 +1,114 @@
 # DONA CHATBOT
-# Version 1.0
+# Version 2.0
 
-print("=============")
-print("DONA CHATBOT")
-print("=============")
+import datetime
+import random
 
+# Show menu
+def show_menu():
+    print("=============")
+    print("DONA CHATBOT")
+    print("=============")
+    print()
+    print("Hello!")
+    print("I'm DonaBot.")
+    print("Type 'help' to see available commands.")
+    print("Type 'exit' to quit.")
 
-print("Hello!")
-print("I'm DonaBot.")
-print("Type 'help' to see available commands.")
-print("Type 'exit' to quit.")
+def handle_command(get_word,historylist):
+    greeting = ["hello", "hi", "hey", "good morning", "good evening"]
 
-botlist=["hello","hi","how are you","help","your name","bye","creator","exit","thank you"]
-
-while True:
-    get_word=input("You:").strip().lower()
-
-    if get_word=="hello" or get_word=="hi" or get_word=="hey" or get_word=="good morning" or get_word=="good evening":
-        print("Bot: Hi!")
-    elif get_word=="how are you":
-        print("Bot: I'm fine, thanks!")
-    elif get_word=="help":
-        for i in botlist:
-            print(f"-{i}")
+    if get_word in greeting:
+       return show_hi()
+    elif get_word == "how are you":
+       return "I'm fine, thanks!"
+    elif get_word == "help":
+       return show_help()
     elif get_word == "thank you":
-        print("Bot: You're welcome!")
+       return "You're welcome!"
     elif get_word == "creator":
-            print("Bot: I was created by Dona :)")
+       return "I was created by Dona :)"
     elif get_word == "your name":
-            print("Bot: I'm DonaBot. :)")
-    elif get_word=="bye" or get_word=="good bye" or get_word=="exit":
-        print("Bot: Good Bye :)")
-        break
+       return "I'm DonaBot. :)"
+    elif get_word == "time":
+       return show_time()
+    elif get_word == "date":
+       return show_date()
+    elif get_word == "joke":
+       return show_joke()
+    elif get_word == "history":
+       return show_history(historylist)
+    elif get_word in ["bye", "good bye", "exit"]:
+       return "Good Bye!"
     else:
-        print("Bot: Sorry, I don't understand.")
+       return "none"
+
+def show_hi():
+    greeting_answer = ["Hi!", "Hello!", "Hey there!", "Nice to see you!", "Hi! How can I help you?"]
+    return random.choice(greeting_answer)
+
+def show_help():
+    botlist = ["greeting", "how are you", "help", "your name", "bye", "creator", "exit", "thank you","date","time","joke","history"]
+    text=""
+    for i in botlist:
+        text += f"- {i}\n"
+    return text
+
+def show_date():
+    x = datetime.datetime.now()
+    return "Today's date is: " + x.strftime("%A") + ", " + x.strftime("%Y") + "/" + x.strftime("%m") + "/" + x.strftime("%d")
+
+def show_time():
+    current_time = datetime.datetime.now()
+    return "Current time: "+ current_time.strftime("%H") + ":" + current_time.strftime("%M") + ":" + current_time.strftime("%S")
+
+def show_joke():
+    jokelist=["Why do programmers prefer dark mode? Because light attracts bugs!","Why did the computer go to the doctor? Because it had a virus!","Why was the math book sad? Because it had too many problems.","I would tell you a UDP joke... but you might not get it."]
+    joke = random.choice(jokelist)
+    return joke
+
+def show_history(historylist):
+    if not historylist:
+        return "History is empty."
+
+    text = "========== Chat History ==========\n\n"
+
+    for info in historylist:
+        text += f"You: {info['user']}\n"
+        text += f"Bot: {info['bot']}\n\n"
+
+    return text
+
+def main(historylist):
+
+    while True:
+        conversation = {}
+        get_word = input("You: ").strip().lower()
+        answer = handle_command(get_word, historylist)
+        if answer == "none":
+            print("Bot: Sorry, I don't understand.")
+            conversation["user"] = get_word
+            conversation["bot"] = "Sorry, I don't understand."
+            historylist.append(conversation)
+        elif answer== "Good Bye!":
+            print("Bot: Good Bye!")
+            break
+        elif get_word == "help" or get_word == "history":
+            print(f"Bot: {answer}")
+
+        else:
+            print(f"Bot: {answer}")
+            conversation["user"] = get_word
+            conversation["bot"] = answer
+
+            historylist.append(conversation)
+
+#==============
+#=====Main=====
+#==============
+
+show_menu()
+historylist = []
+
+main(historylist)
 
