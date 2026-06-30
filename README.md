@@ -3,6 +3,7 @@
 A console-based chatbot built with Python.
 
 This project started as a simple chatbot and has gradually evolved by adding new features and improving the project structure.
+Chat history is automatically stored in a local JSON file and automatically loaded each time the program starts.
 
 ## Features
 
@@ -51,7 +52,6 @@ This project started as a simple chatbot and has gradually evolved by adding new
 ```text
 .
 ├── main.py
-├── history.json
 ├── README.md
 └── .gitignore
 ```
